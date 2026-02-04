@@ -1,31 +1,25 @@
-// const LIFF_ID = "2009043945-xeksuOQk";  // ←あなたのIDに置き換え済
-const LIFF_ID = "2009043945-xeksu0Qk";
-
-
-async function main() {
-  await liff.init({ liffId: LIFF_ID });
-
-  if (!liff.isLoggedIn()) {
-    liff.login();
+document.getElementById("send").addEventListener("click", async () => {
+  // LINEアプリ外なら止める（PCブラウザ/スマホChromeなど）
+  if (!liff.isInClient()) {
+    alert("LINEアプリ内で開いてください");
     return;
   }
 
-  document.getElementById("send").addEventListener("click", async () => {
+  const msg = document.getElementById("msg").value.trim();
+  if (!msg) {
+    alert("メッセージを入力してください");
+    return;
+  }
 
-    if (!liff.isInClient()) {
-      alert("LINE内で開いてください");
-      return;
-    }
-
-    const msg = document.getElementById("msg").value;
-
+  try {
     await liff.sendMessages([
-      { type: "text", text: "テスト送信：" + msg }
+      { type: "text", text: "テスト送信: " + msg }
     ]);
 
     alert("送信完了");
     liff.closeWindow();
-  });
-}
-
-main();
+  } catch (e) {
+    console.error(e);
+    alert("送信失敗: " + (e?.message ?? e));
+  }
+});
