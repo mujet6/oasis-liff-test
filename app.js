@@ -1,4 +1,14 @@
-const LIFF_ID = "2009043945-xeksuOQk"; // O と Q が大文字
+const LIFF_ID = "2009043945-xeksuOQk";
+
+async function main() {
+  await liff.init({ liffId: LIFF_ID });
+
+  // ★毎回ログインを要求して同意を取り直す（確認できたら後で消す）
+  liff.login({ redirectUri: location.href });
+}
+
+main();
+
 
 window.addEventListener("load", async () => {
   try {
